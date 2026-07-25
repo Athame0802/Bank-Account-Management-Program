@@ -6,8 +6,8 @@ namespace BankAccountManagementProgram
 {
     public class BankStatement
     {
-        public string Time;
-        public bool IsDeposit;
-        public ulong Amount;
+        public string Time { get; set; }
+        public bool IsDeposit { get; set; }
+        public ulong Amount { get; set; }
     }
 }
