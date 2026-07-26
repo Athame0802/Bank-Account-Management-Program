@@ -64,5 +64,24 @@ namespace BankAccountManagementProgram
                 return false;
             }
         }
+
+        public static void RequestAdministrator()
+        {
+            try
+            {
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    FileName = Process.GetCurrentProcess().MainModule?.FileName,
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+
+                Process.Start(info);
+            }
+            catch
+            {
+                return;
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace BankAccountManagementProgram
         public void Start()
         {
             bankManager.CheckSaveFolderAndFileAndLoad();
+            Program.RequestAdministrator();
             MainMenu();
         }
 
