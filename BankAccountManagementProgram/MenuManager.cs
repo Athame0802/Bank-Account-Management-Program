@@ -27,8 +27,8 @@ namespace BankAccountManagementProgram
 
         public void Start()
         {
-            bankManager.CheckSaveFolderAndFileAndLoad();
             Program.RequestAdministrator();
+            bankManager.CheckSaveFolderAndFileAndLoad();
             MainMenu();
         }
 
@@ -85,6 +85,9 @@ namespace BankAccountManagementProgram
                     break;
                 case LoadStatus.LoadSucceed:
                     Program.ClearAndPrintMessage("세이브 로드에 성공했습니다.", ERROR_PRINT_LINE_POS + 1);
+                    break;
+                case LoadStatus.FileModified:
+                    Program.ClearAndPrintMessage("세이브 파일이 수정되어 새로운 파일로 시작합니다.", ERROR_PRINT_LINE_POS + 1);
                     break;
             }
 

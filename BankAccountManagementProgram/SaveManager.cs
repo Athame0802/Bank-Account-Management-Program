@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace BankAccountManagementProgram
 {
@@ -11,7 +12,8 @@ namespace BankAccountManagementProgram
     {
         NoFile,
         LoadFailed,
-        LoadSucceed
+        LoadSucceed,
+        FileModified
     }
 
     public static class SaveManager
@@ -21,39 +23,62 @@ namespace BankAccountManagementProgram
 
         public static void CheckSaveFolderAndFileAndLoad(ref ulong balance, ref List<BankStatement> statements)
         {
-            string filePath = AppDomain.CurrentDomain.BaseDirectory;
-            string folderName = "Save";
-
-            string folderPath = Path.Combine(filePath, folderName);
-
-            if (!Directory.Exists(folderPath))
+            try
             {
-                Directory.CreateDirectory(folderPath);
-            }
+                string filePath = AppDomain.CurrentDomain.BaseDirectory;
+                string folderName = "Save";
 
-            string saveFileName = "save.json";
-            saveFilePath = Path.Combine(folderPath, saveFileName);
+                string folderPath = Path.Combine(filePath, folderName);
 
-            if (File.Exists(saveFilePath))
-            {
-                bool isLoadSucceed = TryLoadStatement(ref balance, ref statements);
-
-                if (!isLoadSucceed)
+                if (!Directory.Exists(folderPath))
                 {
-                    Program.ClearAndPrintMessage("파일 로드에 실패했습니다.", 18);
-                    statements = new(50);
-                    balance = 0;
+                    Directory.CreateDirectory(folderPath);
                 }
 
-                LoadStatus = isLoadSucceed ? LoadStatus.LoadSucceed : LoadStatus.LoadFailed;
-                return;
-            }
-            
-            Program.ClearAndPrintMessage("저장된 파일이 존재하지 않습니다.", 18);
-            LoadStatus = LoadStatus.NoFile;
+                string saveFileName = "save.json";
+                saveFilePath = Path.Combine(folderPath, saveFileName);
 
-            statements = new(50);
-            balance = 0;
+                if (File.Exists(saveFilePath))
+                {
+                    bool isLoadSucceed = TryLoadStatement(ref balance, ref statements);
+
+                    if (!isLoadSucceed)
+                    {
+                        statements = new(50);
+                        balance = 0;
+                    }
+                    else
+                    {
+                        foreach (BankStatement statement in statements)
+                        {
+                            bool isNotModified = Regex.IsMatch(statement.Time, "\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])");
+                            if (!isNotModified)
+                            {
+                                LoadStatus = LoadStatus.FileModified;
+
+                                statements = new(50);
+                                balance = 0;
+                                return;
+                            }
+                        }
+                    }
+
+                    LoadStatus = isLoadSucceed ? LoadStatus.LoadSucceed : LoadStatus.LoadFailed;
+                    return;
+                }
+            
+                LoadStatus = LoadStatus.NoFile;
+
+                statements = new(50);
+                balance = 0;
+            }
+            catch
+            {
+                LoadStatus = LoadStatus.LoadFailed;
+
+                statements = new(50);
+                balance = 0;
+            }
         }
 
         public static bool TrySaveStatement(List<BankStatement> statements, ulong balance, ulong amount, bool isDeposit)
