@@ -9,5 +9,12 @@ namespace BankAccountManagementProgram
         public string Time { get; set; }
         public bool IsDeposit { get; set; }
         public ulong Amount { get; set; }
+
+        public BankStatement(string time, bool isDeposit, ulong amount)
+        {
+            Time = time;
+            IsDeposit = isDeposit;
+            Amount = amount;
+        }
     }
 }
