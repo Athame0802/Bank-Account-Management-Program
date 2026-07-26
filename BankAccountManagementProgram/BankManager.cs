@@ -22,7 +22,7 @@ namespace BankAccountManagementProgram
                 }
 
                 bool isSaveSucceed = SaveManager.TrySaveStatement(BankStatements, Balance, amount, isDeposit: true);
-                if (!isSaveSucceed) Program.ClearAndPrintMessage("거래 내역 저장에 실패했습니다. 관리자 권한으로 실행 중인지 확인해주세요.", 7);
+                if (!isSaveSucceed) Program.ClearAndPrintMessage("거래 내역 저장에 실패했습니다. 관리자 권한으로 실행 중인지 확인해주세요.", 6);
 
                 return true;
             }
@@ -45,7 +45,7 @@ namespace BankAccountManagementProgram
                 }
 
                 bool isSaveSucceed = SaveManager.TrySaveStatement(BankStatements, Balance, amount, isDeposit: false);
-                if (!isSaveSucceed) Program.ClearAndPrintMessage("거래 내역 저장에 실패했습니다. 관리자 권한으로 실행 중인지 확인해주세요.", 15);
+                if (!isSaveSucceed) Program.ClearAndPrintMessage("거래 내역 저장에 실패했습니다. 관리자 권한으로 실행 중인지 확인해주세요.", 6);
 
                 return true;
             }
