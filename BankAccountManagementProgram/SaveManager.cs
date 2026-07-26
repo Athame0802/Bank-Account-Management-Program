@@ -56,24 +56,6 @@ namespace BankAccountManagementProgram
             balance = 0;
         }
 
-        public static bool isAdministrator()
-        {
-            try
-            {
-                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-                {
-                    if (identity == null) return false;
-
-                    WindowsPrincipal principal = new(identity);
-                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public static bool TrySaveStatement(List<BankStatement> statements, ulong balance, ulong amount, bool isDeposit)
         {
             try

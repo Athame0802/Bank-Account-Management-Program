@@ -72,7 +72,7 @@ namespace BankAccountManagementProgram
                 메뉴 번호 입력 : 
                 """);
 
-            if (!SaveManager.isAdministrator()) Program.ClearAndPrintMessage("관리자 권한으로 실행하지 않아 파일이 저장되지 않을 수도 있습니다.", ERROR_PRINT_LINE_POS);
+            if (!Program.isAdministrator()) Program.ClearAndPrintMessage("관리자 권한으로 실행하지 않아 파일이 저장되지 않을 수도 있습니다.", ERROR_PRINT_LINE_POS);
 
             switch (SaveManager.LoadStatus)
             {

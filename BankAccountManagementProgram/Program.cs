@@ -1,4 +1,7 @@
-﻿namespace BankAccountManagementProgram
+﻿using System.Diagnostics;
+using System.Security.Principal;
+
+namespace BankAccountManagementProgram
 {
     public class Program
     {
@@ -42,6 +45,24 @@
 
             if (shouldGoBack)
                 Console.SetCursorPosition(0, currentCursorTopPosition);
+        }
+
+        public static bool isAdministrator()
+        {
+            try
+            {
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                {
+                    if (identity == null) return false;
+
+                    WindowsPrincipal principal = new(identity);
+                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
