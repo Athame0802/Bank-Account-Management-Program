@@ -30,6 +30,7 @@ namespace BankAccountManagementProgram
             Program.RequestAdministrator();
             bankManager.CheckSaveFolderAndFileAndLoad();
             MainMenu();
+            Console.Write("dtd");
         }
 
         private void MainMenu()
