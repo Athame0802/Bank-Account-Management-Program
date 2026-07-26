@@ -67,6 +67,8 @@ namespace BankAccountManagementProgram
 
         public static void RequestAdministrator()
         {
+            if (isAdministrator()) return;
+
             try
             {
                 ProcessStartInfo info = new ProcessStartInfo
@@ -77,6 +79,7 @@ namespace BankAccountManagementProgram
                 };
 
                 Process.Start(info);
+                Quit();
             }
             catch
             {
