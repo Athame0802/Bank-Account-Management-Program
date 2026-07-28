@@ -65,5 +65,10 @@ namespace BankAccountManagementProgram
             Balance = _balance;
             BankStatements = _statements;
         }
-}
+
+        public void OrderStatementsByTime()
+        {
+            BankStatements = BankStatements.OrderBy(b => b.Time).ToList();
+        }
+    }
 }

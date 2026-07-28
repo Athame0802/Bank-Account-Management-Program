@@ -5,7 +5,7 @@ using System.Text;
 namespace BankAccountManagementProgram
 {
     public static class IOManager
-    {
+    { 
         public static bool TryInputNumberAndQuit(out ulong number, out bool isQuit)
         {
             string? input = Console.ReadLine();

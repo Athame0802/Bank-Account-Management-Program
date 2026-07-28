@@ -311,9 +311,11 @@ namespace BankAccountManagementProgram
 
             Console.Clear();
 
+            bankManager.OrderStatementsByTime();
+
             foreach (BankStatement statement in bankManager.BankStatements)
             {
-                Console.WriteLine($"[{statement.Time}]");
+                Console.WriteLine($"[{statement.Time.ToString("yyyy-MM-dd HH:mm:ss")}]");
                 Console.WriteLine(statement.IsDeposit ? "입금" : "출금");
                 IOManager.PrintNumberWithComma(statement.Amount); Console.WriteLine("원");
                 Console.WriteLine("----------------------------");

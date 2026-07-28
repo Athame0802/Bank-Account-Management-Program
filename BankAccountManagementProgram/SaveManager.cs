@@ -47,21 +47,6 @@ namespace BankAccountManagementProgram
                         statements = new(50);
                         balance = 0;
                     }
-                    else
-                    {
-                        foreach (BankStatement statement in statements)
-                        {
-                            bool isNotModified = Regex.IsMatch(statement.Time, "\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])");
-                            if (!isNotModified)
-                            {
-                                LoadStatus = LoadStatus.FileModified;
-
-                                statements = new(50);
-                                balance = 0;
-                                return;
-                            }
-                        }
-                    }
 
                     LoadStatus = isLoadSucceed ? LoadStatus.LoadSucceed : LoadStatus.LoadFailed;
                     return;
@@ -85,8 +70,7 @@ namespace BankAccountManagementProgram
         {
             try
             {
-                string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                BankStatement statement = new(currentTime, isDeposit, amount);
+                BankStatement statement = new(DateTime.Now, isDeposit, amount);
 
                 statements.Add(statement);
 
@@ -114,7 +98,6 @@ namespace BankAccountManagementProgram
         {
             try
             {
-
                 string saveFileString = File.ReadAllText(saveFilePath);
 
                 JsonSerializerOptions options = new JsonSerializerOptions
@@ -127,11 +110,12 @@ namespace BankAccountManagementProgram
                 SaveData saveData = JsonSerializer.Deserialize<SaveData>(saveFileString, options);
 
                 if (saveData == null) return false;
+                if (saveData.BankStatements == null) return false;
 
-                statements = saveData.BankStatements;
+                statements = saveData.BankStatements.OrderBy(b => b.Time).ToList();
                 balance = saveData.Balance;
 
-                return statements != null;
+                return true;
             }
             catch
             {

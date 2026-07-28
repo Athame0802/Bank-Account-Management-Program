@@ -6,11 +6,11 @@ namespace BankAccountManagementProgram
 {
     public class BankStatement
     {
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
         public bool IsDeposit { get; set; }
         public ulong Amount { get; set; }
 
-        public BankStatement(string time, bool isDeposit, ulong amount)
+        public BankStatement(DateTime time, bool isDeposit, ulong amount)
         {
             Time = time;
             IsDeposit = isDeposit;
