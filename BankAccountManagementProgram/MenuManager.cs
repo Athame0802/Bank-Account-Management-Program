@@ -16,10 +16,13 @@ namespace BankAccountManagementProgram
 
     public class MenuManager
     {
-        private Menu currentMenu = Menu.Main;
-        private const int ERROR_PRINT_LINE_POS = 3;
         private BankManager bankManager = default;
+        
+        private const int ERROR_PRINT_LINE_POS = 3;
 
+        private Menu currentMenu = Menu.Main;
+        private bool isStart = true;
+        
         public MenuManager(BankManager bankManager)
         {
             this.bankManager = bankManager;
@@ -73,23 +76,30 @@ namespace BankAccountManagementProgram
                 메뉴 번호 입력 : 
                 """);
 
-            if (!Program.isAdministrator()) Program.ClearAndPrintMessage("관리자 권한으로 실행하지 않아 파일이 저장되지 않을 수도 있습니다.", ERROR_PRINT_LINE_POS);
-
-            switch (SaveManager.LoadStatus)
+            if (isStart)
             {
-                case LoadStatus.NoFile:
-                    Program.ClearAndPrintMessage("저장된 파일이 존재하지 않습니다.", ERROR_PRINT_LINE_POS + 1);
-                    break;
-                case LoadStatus.LoadFailed:
-                    Program.ClearAndPrintMessage("세이브 로드에 실패했습니다.", ERROR_PRINT_LINE_POS + 1);
-                    break;
-                case LoadStatus.LoadSucceed:
-                    Program.ClearAndPrintMessage("세이브 로드에 성공했습니다.", ERROR_PRINT_LINE_POS + 1);
-                    break;
-                case LoadStatus.FileModified:
-                    Program.ClearAndPrintMessage("세이브 파일이 수정되어 새로운 파일로 시작합니다.", ERROR_PRINT_LINE_POS + 1);
-                    break;
+                isStart = false;
+
+                if (!Program.isAdministrator()) 
+                    Program.ClearAndPrintMessage("관리자 권한으로 실행하지 않아 파일에 접근하지 못할 수도 있습니다.", ERROR_PRINT_LINE_POS);
+
+                switch (SaveManager.LoadStatus)
+                {
+                    case LoadStatus.NoFile:
+                        // Program.ClearAndPrintMessage("저장된 파일이 존재하지 않습니다.", ERROR_PRINT_LINE_POS + 1);
+                        break;
+                    case LoadStatus.LoadFailed:
+                        Program.ClearAndPrintMessage("세이브 로드에 실패했습니다.", ERROR_PRINT_LINE_POS + 1);
+                        break;
+                    case LoadStatus.LoadSucceed:
+                        Program.ClearAndPrintMessage("세이브 로드에 성공했습니다.", ERROR_PRINT_LINE_POS + 1);
+                        break;
+                    case LoadStatus.FileModified:
+                        Program.ClearAndPrintMessage("세이브 파일이 수정되어 새로운 파일로 시작합니다.", ERROR_PRINT_LINE_POS + 1);
+                        break;
+                }
             }
+
 
             int menuInput = default;
 
